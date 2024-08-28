@@ -2,32 +2,57 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --color-white: 0 0% 100%;
+    --color-black: 0 0% 0%;
+
+    /* Light mode colors */
+    --color-grey-100: 0 0% 75%;
+    --color-grey-90: 0 0% 76%;
+    --color-grey-80: 0 0% 78%;
+    --color-grey-70: 0 0% 80%;
+    --color-grey-60: 0 0% 82%;
+    --color-grey-50: 0 0% 84%;
+    --color-grey-40: 0 0% 86%;
+    --color-grey-30: 0 0% 88%;
+    --color-grey-20: 0 0% 90%;
+    --color-grey-10: 0 0% 92%;
+
+    --color-background: var(--color-grey-10);
+    --color-primary: var(--color-black);
+    --color-primary-foreground: var(--color-grey-10);
+    --color-secondary: 0 0% 0% / 0.56;
+    --color-disabled: 0 0% 0% / 0.32;
+  }
+
+  .dark {
+    /* Dark mode colors */
+    --color-grey-100: 0 0% 8%;
+    --color-grey-90: 0 0% 10%;
+    --color-grey-80: 0 0% 12%;
+    --color-grey-70: 0 0% 14%;
+    --color-grey-60: 0 0% 16%;
+    --color-grey-50: 0 0% 18%;
+    --color-grey-40: 0 0% 20%;
+    --color-grey-30: 0 0% 22%;
+    --color-grey-20: 0 0% 24%;
+    --color-grey-10: 0 0% 25%;
+
+    --color-background: var(--color-grey-100);
+    --color-primary: var(--color-white);
+    --color-primary-foreground: var(--color-grey-100);
+    --color-secondary: 0 0% 100% / 0.56;
+    --color-disabled: 0 0% 100% / 0.32;
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
-
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  .debug {
+    @apply outline outline-2 outline-[#dc143c];
+  }
+
+  .debug > * {
+    @apply outline outline-2 outline-[#3cdc14];
   }
 }
