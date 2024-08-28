@@ -11,11 +11,11 @@ function Subtitle({ children, className }: PropsWithChildren<{ className?: strin
 }
 
 function Highlight({ children, className }: PropsWithChildren<{ className?: string }>) {
-  return <h3 className={cn('font-body text-h3', className)}>{children}</h3>
+  return <p className={cn('text-highlight font-body', className)}>{children}</p>
 }
 
 function Message({ children, className }: PropsWithChildren<{ className?: string }>) {
-  return <h4 className={cn('font-body text-message', className)}>{children}</h4>
+  return <p className={cn('font-body text-message', className)}>{children}</p>
 }
 
 export { Title, Subtitle, Highlight, Message }
