@@ -8,6 +8,7 @@ const config = {
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
   ],
+  // this is needed for programmatically rendering components that use css variables
   safelist: [
     {
       pattern: /bg-grey-(100|90|80|70|60|50|40|30|20|10)/,
@@ -25,7 +26,13 @@ const config = {
       center: true,
       padding: '2rem',
       screens: {
-        '2xl': '1400px',
+        sm: '640px',
+        md: '768px',
+        lg: '1024px',
+        xl: '1280px',
+        '2xl': '1440px',
+        '3xl': '1600px',
+        '4xl': '1920px',
       },
     },
     colors: {
@@ -70,10 +77,11 @@ const config = {
       },
     },
     borderRadius: {
-      lg: 'var(--radius)',
-      md: 'calc(var(--radius) - 0px)',
-      sm: 'calc(var(--radius) - 0px)',
       full: '9999px',
+      xl: 'calc(var(--radius) + 4px)',
+      lg: 'calc(var(--radius) + 2px)',
+      md: 'var(--radius)',
+      sm: 'calc(var(--radius) - 2px)',
     },
     extend: {
       fontFamily: {
@@ -83,34 +91,25 @@ const config = {
       fontSize: {
         h1: ['32px', { lineHeight: '48px', letterSpacing: '0em', fontWeight: '500' }],
         h2: ['24px', { lineHeight: '40px', letterSpacing: '0em', fontWeight: '500' }],
-        h3: ['16px', { lineHeight: '24px', letterSpacing: '0.01em', fontWeight: '400' }],
+        hightlight: ['16px', { lineHeight: '24px', letterSpacing: '0.01em', fontWeight: '400' }],
         body: ['14px', { lineHeight: '20px', letterSpacing: '0.01em', fontWeight: '400' }],
         button: ['14px', { lineHeight: '18px', letterSpacing: '0.0021em', fontWeight: '400' }],
         input: ['14px', { lineHeight: '18px', letterSpacing: '0.0021em', fontWeight: '400' }],
         label: ['12px', { lineHeight: '16px', letterSpacing: '0.01em', fontWeight: '400' }],
         message: ['12px', { lineHeight: '12px', letterSpacing: '0.01em', fontWeight: '400' }],
       },
-      backgroundImage: {
-        special: `
-          linear-gradient(to bottom, rgba(20, 20, 20, 0.7), rgba(50, 50, 50, 0.4)), 
-          linear-gradient(to bottom, rgba(60, 60, 60, 1), rgba(60, 60, 60, 0.4))
-        `,
+      maxWidth: {
+        'screen-sm': '640px',
+        'screen-md': '768px',
+        'screen-lg': '1024px',
+        'screen-xl': '1280px',
+        'screen-2xl': '1440px',
+        'screen-3xl': '1600px',
+        'screen-4xl': '1920px',
       },
     },
   },
-  plugins: [
-    require('tailwindcss-animate'),
-    function ({ addUtilities }: { addUtilities: (utilities: Record<string, any>) => void }) {
-      addUtilities({
-        '.bg-origin-padding': {
-          'background-origin': 'padding-box',
-        },
-        '.bg-clip-border': {
-          'background-clip': 'border-box',
-        },
-      })
-    },
-  ],
+  plugins: [require('tailwindcss-animate')],
 } satisfies Config
 
 export default config
