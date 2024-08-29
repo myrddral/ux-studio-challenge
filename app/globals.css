@@ -6,6 +6,11 @@
   * {
     @apply border-border;
   }
+  html,
+  body,
+  :root {
+    @apply h-full w-full;
+  }
   body {
     @apply bg-background text-primary;
   }

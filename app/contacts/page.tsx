@@ -9,7 +9,7 @@ export default async function ContactsPage() {
   const contacts = await getContacts()
 
   return (
-    <main className="flex flex-col w-full">
+    <main className="flex w-full flex-col">
       <ContactList contacts={contacts} />
     </main>
   )
