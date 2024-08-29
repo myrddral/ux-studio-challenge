@@ -47,9 +47,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
-      <body
-        className={`${lexendDeca.variable} ${glysa.variable} mx-auto max-w-screen-2xl font-body text-body`}
-      >
+      <body className={`${lexendDeca.variable} ${glysa.variable} mx-auto font-body text-body`}>
         <ThemeProvider attribute="class" disableTransitionOnChange>
           {children}
         </ThemeProvider>

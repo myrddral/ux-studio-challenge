@@ -1,5 +1,5 @@
 'use server'
-import { contactSchema, type Contact } from '@/lib/schemas/contact.schema'
+import { contactFormSchema, contactSchema, type Contact } from '@/lib/schemas/contact.schema'
 
 import { prisma } from '@/lib/prisma-client/prisma-client'
 import { revalidatePath } from 'next/cache'
@@ -44,28 +44,35 @@ export async function getContact(id: string): Promise<Contact> {
   }
 }
 
-export async function createContact(prevState: any, formData: FormData) {
+export async function createContact(formData: FormData) {
   const { userId } = auth()
 
   if (!userId) throw new Error('Unauthorized')
 
   try {
-    const contact = contactSchema.parse({
+    const contact = contactFormSchema.parse({
       ...Object.fromEntries(formData.entries()),
       userId,
     })
 
+    const data = {
+      ...contact,
+      avatar: null,
+      userId,
+    }
+
     await prisma.contact.create({
-      data: contact,
+      data,
     })
   } catch (e) {
+    console.log(e)
     throw new Error('Failed to create contact')
   }
 
   revalidatePath('/contacts')
 }
 
-export async function deleteContact(prevState: any, formData: FormData) {
+export async function deleteContact(formData: FormData) {
   const { userId } = auth()
 
   if (!userId) throw new Error('Unauthorized')
@@ -84,7 +91,7 @@ export async function deleteContact(prevState: any, formData: FormData) {
   revalidatePath('/contacts')
 }
 
-export async function updateContact(prevState: any, formData: FormData) {
+export async function updateContact(formData: FormData) {
   const { userId } = auth()
 
   if (!userId) throw new Error('Unauthorized')

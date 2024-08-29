@@ -11,4 +11,12 @@ export const contactSchema = z.object({
   updatedAt: z.date(),
 })
 
+export const contactFormSchema = contactSchema.omit({
+  id: true,
+  userId: true,
+  avatar: true,
+  createdAt: true,
+  updatedAt: true,
+})
+
 export type Contact = z.infer<typeof contactSchema>
