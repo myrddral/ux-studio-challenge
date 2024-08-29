@@ -68,6 +68,14 @@
     --color-input: var(--color-primary);
     --color-input-background: var(--color-grey-80);
   }
+
+  .grid-child {
+    @apply border border-grey-60;
+  }
+
+  .flex-center {
+    @apply flex items-center justify-center;
+  }
 }
 
 @layer components {
@@ -129,6 +137,26 @@
 
   .debug > * {
     @apply outline outline-2 outline-[#3cdc14];
+  }
+
+  .debug-2 {
+    @apply outline outline-2 outline-[#cad400];
+  }
+
+  .debug-2 > * {
+    @apply outline outline-2 outline-[#bc5e00];
+  }
+
+  .bg-debug {
+    @apply bg-[#cad400]/10;
+  }
+
+  .bg-debug-2 {
+    @apply bg-[#bc5e00]/10;
+  }
+
+  .bg-debug-3 {
+    @apply bg-[#007bff]/10;
   }
 
   .btn-grad {

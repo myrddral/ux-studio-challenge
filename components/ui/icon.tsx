@@ -15,15 +15,17 @@ export type IconProps = HTMLAttributes<HTMLImageElement> & {
 
 export const Icon = forwardRef<HTMLImageElement, IconProps>(({ icon, size = 24, ...props }, ref) => {
   return (
-    <Image
-      className={cn('object-contain', props.className)}
-      src={`/icons/${icon}.svg`}
-      alt={icon}
-      width={size}
-      height={size}
-      ref={ref}
-      {...props}
-    />
+    <div className={cn('flex-center')}>
+      <Image
+        className={cn('object-contain', props.className)}
+        src={`/icons/${icon}.svg`}
+        alt={icon}
+        width={size}
+        height={size}
+        ref={ref}
+        {...props}
+      />
+    </div>
   )
 })
 

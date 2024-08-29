@@ -23,7 +23,7 @@ export function ButtonPreview() {
                   <Button
                     key={`${intent}-${variant}-${size}`}
                     intent={intent}
-                    variant={variant}
+                    variant={variant === 'default' ? 'iconButton' : variant}
                     size={size}
                     icon={variant === 'iconButton' ? <Icon icon="add" /> : undefined}
                   >

@@ -91,7 +91,7 @@ const config = {
       fontSize: {
         h1: ['32px', { lineHeight: '48px', letterSpacing: '0em', fontWeight: '500' }],
         h2: ['24px', { lineHeight: '40px', letterSpacing: '0em', fontWeight: '500' }],
-        hightlight: ['16px', { lineHeight: '24px', letterSpacing: '0.01em', fontWeight: '400' }],
+        highlight: ['16px', { lineHeight: '24px', letterSpacing: '0.01em', fontWeight: '400' }],
         body: ['14px', { lineHeight: '20px', letterSpacing: '0.01em', fontWeight: '400' }],
         button: ['14px', { lineHeight: '18px', letterSpacing: '0.0021em', fontWeight: '400' }],
         input: ['14px', { lineHeight: '18px', letterSpacing: '0.0021em', fontWeight: '400' }],
