@@ -1,4 +1,6 @@
 'use client'
+import type { ReactNode } from 'react'
+
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -16,14 +18,10 @@ import { Subtitle } from './texts'
 import { ProfilePic } from './profile-pic'
 import { createContact } from '@/app/actions'
 
-export function ContactDialog() {
+export function ContactDialog({ children }: { children: ReactNode }) {
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <Button intent={'special'} variant={'iconButton'} icon={<Icon icon="add" />}>
-          Add new
-        </Button>
-      </DialogTrigger>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[364px]">
         <DialogHeader>
           <Subtitle>Add contact</Subtitle>

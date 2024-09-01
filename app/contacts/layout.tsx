@@ -1,5 +1,6 @@
 import { ContactDialog } from '@/components/contact-dialog'
 import { Title } from '@/components/texts'
+import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/ui/icon'
 import { cn } from '@/lib/utils'
 
@@ -17,7 +18,11 @@ export default function ContactsLayout({ children }: { children: React.ReactNode
               <Icon icon="profile" />
             </div>
           </div>
-          <ContactDialog />
+          <ContactDialog>
+            <Button intent={'special'} variant={'iconButton'} icon={<Icon icon="add" />}>
+              Add new
+            </Button>
+          </ContactDialog>
         </div>
       </div>
 
