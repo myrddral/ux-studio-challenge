@@ -9,8 +9,10 @@ const buttonVariants = cva(
   {
     variants: {
       intent: {
-        primary: 'bg-primary-button text-primary transition hover:brightness-110 active:brightness-125',
-        secondary: 'bg-secondary-button text-primary transition hover:brightness-125 active:brightness-150',
+        primary:
+          'hover:bg-primary-button-hover active:bg-primary-button-active bg-primary-button text-primary transition',
+        secondary:
+          'hover:bg-secondary-button-hover active:bg-secondary-button-active bg-secondary-button text-primary transition',
         special:
           'btn-grad rounded-full border border-transparent transition hover:brightness-125 active:brightness-150',
       },
@@ -39,7 +41,7 @@ type IconNotAllowedVariants = Exclude<ButtonVariants['variant'], IconRequiredVar
 type ButtonPropsBase = ButtonHTMLAttributes<HTMLButtonElement> &
   ButtonVariants & {
     asChild?: boolean
-    children: ReactNode
+    children?: ReactNode
   }
 
 type ButtonPropsWithIcon = ButtonPropsBase & {

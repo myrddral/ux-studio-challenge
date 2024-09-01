@@ -45,6 +45,7 @@
     --color-border: var(--color-grey-60);
     --color-input: var(--color-primary);
     --color-input-background: var(--color-grey-20);
+    --color-popover: var(--color-grey-20);
   }
 
   .dark {
@@ -65,13 +66,18 @@
     --color-secondary: 0 0% 100% / 0.56;
     --color-disabled: 0 0% 100% / 0.32;
     --color-primary-button: var(--color-grey-60);
+    --color-primary-button-hover: var(--color-grey-50);
+    --color-primary-button-active: var(--color-grey-50);
     --color-secondary-button: var(--color-grey-100);
+    --color-secondary-button-hover: var(--color-grey-90);
+    --color-secondary-button-active: var(--color-grey-80);
     --color-disabled-button: var(--color-grey-60);
     --color-muted: 0 0% 14.9%;
     --color-muted-foreground: var(--color-grey-60);
     --color-border: var(--color-grey-60);
     --color-input: var(--color-primary);
     --color-input-background: var(--color-grey-80);
+    --color-popover: var(--color-grey-80);
   }
 
   .grid-child {

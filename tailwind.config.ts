@@ -50,10 +50,14 @@ const config = {
       primary: {
         DEFAULT: 'hsl(var(--color-primary))',
         button: 'hsl(var(--color-primary-button))',
+        'button-hover': 'hsl(var(--color-primary-button-hover))',
+        'button-active': 'hsl(var(--color-primary-button-active))',
       },
       secondary: {
         DEFAULT: 'hsl(var(--color-secondary))',
         button: 'hsl(var(--color-secondary-button))',
+        'button-hover': 'hsl(var(--color-secondary-button-hover))',
+        'button-active': 'hsl(var(--color-secondary-button-active))',
       },
       muted: {
         DEFAULT: 'hsl(var(--color-muted))',
