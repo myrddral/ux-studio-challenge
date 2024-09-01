@@ -8,6 +8,8 @@ export function ContactList({ contacts }: { contacts: Contact[] }) {
     console.log(contact)
   }
 
+  if (!contacts.length) return "No contacts found"
+
   return (
     <ul className="flex flex-col">
       {contacts.map((contact) => (

@@ -1,9 +1,5 @@
 import { ContactList } from '@/components/contact-list'
-
-const getContacts = async () => {
-  const res = await fetch('https://jsonplaceholder.typicode.com/users')
-  return res.json()
-}
+import { getContacts } from '../actions'
 
 export default async function ContactsPage() {
   const contacts = await getContacts()
