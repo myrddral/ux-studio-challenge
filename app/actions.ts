@@ -1,7 +1,8 @@
 'use server'
-import { contactFormSchema, contactSchema, type Contact } from '@/lib/schemas/contact.schema'
+import type { Contact } from '@/lib/schemas/contact.schema'
+import { contactFormSchema, contactSchema } from '@/lib/schemas/contact.schema'
 
-import { prisma } from '@/lib/prisma-client/prisma-client'
+import prisma from '@/lib/prisma-client/prisma-client'
 import { revalidatePath } from 'next/cache'
 import { auth } from '@/lib/auth/auth'
 
