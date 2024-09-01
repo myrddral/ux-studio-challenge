@@ -46,6 +46,9 @@
     --color-input: var(--color-primary);
     --color-input-background: var(--color-grey-20);
     --color-popover: var(--color-grey-20);
+    --color-popover-button: transparent;
+    --color-popover-button-hover: var(--color-grey-40);
+    --color-popover-button-active: var(--color-grey-30);
   }
 
   .dark {
@@ -78,6 +81,9 @@
     --color-input: var(--color-primary);
     --color-input-background: var(--color-grey-80);
     --color-popover: var(--color-grey-80);
+    --color-popover-button: transparent;
+    --color-popover-button-hover: var(--color-grey-70);
+    --color-popover-button-active: var(--color-grey-60);
   }
 
   .grid-child {

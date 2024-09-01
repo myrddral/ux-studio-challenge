@@ -10,11 +10,13 @@ const buttonVariants = cva(
     variants: {
       intent: {
         primary:
-          'hover:bg-primary-button-hover active:bg-primary-button-active bg-primary-button text-primary transition',
+          'hover:bg-primary-button-hover active:bg-primary-button-active max-w-fit bg-primary-button text-primary transition',
         secondary:
-          'hover:bg-secondary-button-hover active:bg-secondary-button-active bg-secondary-button text-primary transition',
+          'hover:bg-secondary-button-hover active:bg-secondary-button-active max-w-fit bg-secondary-button text-primary transition',
         special:
-          'btn-grad rounded-full border border-transparent transition hover:brightness-125 active:brightness-150',
+          'btn-grad max-w-fit rounded-full border border-transparent transition hover:brightness-125 active:brightness-150',
+        popover:
+          'hover:bg-popover-button-hover active:bg-popover-button-active bg-popover-button rounded-none justify-start text-primary transition first:rounded-t-md last:rounded-b-md !px-2 !gap-3',
       },
       variant: {
         default: 'px-4 py-2',
@@ -22,7 +24,7 @@ const buttonVariants = cva(
         iconButton: 'gap-2 py-2 pl-3 pr-4',
       },
       size: {
-        normal: 'h-10 max-w-fit',
+        normal: 'h-10',
       },
     },
     defaultVariants: {

@@ -66,6 +66,9 @@ const config = {
       popover: {
         DEFAULT: 'hsl(var(--color-popover))',
         foreground: 'hsl(var(--color-popover-foreground))',
+        button: 'hsl(var(--color-popover-button))',
+        'button-hover': 'hsl(var(--color-popover-button-hover))',
+        'button-active': 'hsl(var(--color-popover-button-active))',
       },
       grey: {
         100: 'hsl(var(--color-grey-100) / <alpha-value>)',
@@ -86,6 +89,7 @@ const config = {
       lg: 'calc(var(--radius) + 2px)',
       md: 'var(--radius)',
       sm: 'calc(var(--radius) - 2px)',
+      none: '0px',
     },
     extend: {
       fontFamily: {
