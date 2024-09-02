@@ -26,5 +26,6 @@ This project uses:
 - [Next.js](https://nextjs.org/) with App Router for the framework
 - [TailwindCSS](https://tailwindcss.com/) for design system and styling
 - [shadcn-ui](https://ui.shadcn.com/) for accessible components
-- [React Hook Form](https://react-hook-form.com/) for form handling
+- [React Hook Form](https://react-hook-form.com/) for form handling (TODO)
+- [Tanstack Query](https://tanstack.com/query/latest) for data fetching (TODO)
 - [Zod](https://zod.dev/) for schema validation and type inference
