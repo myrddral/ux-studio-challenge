@@ -17,3 +17,24 @@ export const getImageUrl = async (key: string) => {
     throw new Error('Error getting signed URL from S3')
   }
 }
+
+export const getImageUrls = async (keys: (string | null)[]) => {
+  const getParams = {
+    Bucket: process.env.S3_BUCKET_NAME,
+  }
+
+  try {
+    const urls = await Promise.all(
+      keys
+        .filter((key) => key !== null)
+        .map(async (key) => {
+          const command = new GetObjectCommand({ ...getParams, Key: key as string })
+          return await getSignedUrl(s3, command, { expiresIn: 3600 })
+        })
+    )
+    return urls
+  } catch (err) {
+    console.error('Error getting signed URLs:', err)
+    throw new Error('Error getting signed URLs from S3')
+  }
+}
