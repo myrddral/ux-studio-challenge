@@ -3,6 +3,7 @@ import { Title } from '@/components/texts'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/ui/icon'
 import { cn } from '@/lib/utils'
+import Image from 'next/image'
 
 export default function ContactsLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -15,7 +16,7 @@ export default function ContactsLayout({ children }: { children: React.ReactNode
               <Icon icon="settings" />
             </div>
             <div className="flex-center h-10 w-10">
-              <Icon icon="profile" />
+              <Image src={'/icons/profile.png'} width={24} height={24} alt="" />
             </div>
           </div>
           <ContactDialog type="add">
