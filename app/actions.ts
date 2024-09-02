@@ -64,7 +64,6 @@ export async function createContact(formData: FormData) {
 
     const data = {
       ...contact,
-      avatar: null,
       userId,
     }
 

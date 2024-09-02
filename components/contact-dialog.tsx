@@ -1,7 +1,7 @@
 'use client'
 import type { FormEvent, ReactNode } from 'react'
 
-import { useState } from 'react'
+import { createContact } from '@/app/actions'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -13,20 +13,35 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { DialogClose } from '@radix-ui/react-dialog'
-import { Icon } from './ui/icon'
-import { InputWithLabel } from './ui/input-with-label'
-import { Subtitle } from './texts'
+import { useSearchParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import { AddPictureButton } from './add-picture'
 import { ProfilePic } from './profile-pic'
-import { createContact } from '@/app/actions'
-import AddPicture from './add-picture'
+import { Subtitle } from './texts'
+import { InputWithLabel } from './ui/input-with-label'
 
-export function ContactDialog({ children, type }: { children: ReactNode; type: 'add' | 'edit' }) {
+interface ContactDialogProps {
+  children: ReactNode
+  type: 'add' | 'edit'
+}
+
+export function ContactDialog({ children, type }: ContactDialogProps) {
+  const params = useSearchParams()
+  const [dialogType, setDialogType] = useState(type)
   const [open, setOpen] = useState(false)
-  const [picture, setPicture] = useState<File>()
+  const [imageUrl, setImageUrl] = useState('')
+
+  useEffect(() => {
+    const actionType = params.get('action')
+    if (actionType && ['add', 'edit'].includes(actionType)) {
+      setDialogType(actionType as ContactDialogProps['type'])
+    }
+  }, [params])
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
+    formData.append('avatar', imageUrl)
     await createContact(formData)
     setOpen(false)
   }
@@ -37,17 +52,17 @@ export function ContactDialog({ children, type }: { children: ReactNode; type: '
       <DialogContent className="sm:max-w-[364px]">
         <DialogHeader>
           <Subtitle>
-            <span className="capitalize">{type}</span> contact
+            <span className="capitalize">{dialogType}</span> contact
           </Subtitle>
           <DialogTitle className="sr-only">
-            <span className="capitalize">{type}</span> contact
+            <span className="capitalize">{dialogType}</span> contact
           </DialogTitle>
           <DialogDescription className="sr-only">Dialog add or edit form</DialogDescription>
         </DialogHeader>
         <div className="flex flex-col gap-6">
           <div className="flex items-center gap-4">
             <ProfilePic width={88} height={88} />
-            <AddPicture setPicture={setPicture} />
+            <AddPictureButton setImageUrl={setImageUrl} />
           </div>
           <form onSubmit={handleSubmit} className="flex flex-col gap-6">
             <InputWithLabel
