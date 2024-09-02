@@ -1,7 +1,8 @@
 'use server'
 import type { Contact } from '@/lib/schemas/contact.schema'
-import { contactFormSchema, contactSchema } from '@/lib/schemas/contact.schema'
 
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
+import { contactFormSchema, contactSchema } from '@/lib/schemas/contact.schema'
 import prisma from '@/lib/prisma-client/prisma-client'
 import { revalidatePath } from 'next/cache'
 import { auth } from '@/lib/auth/auth'
@@ -20,6 +21,9 @@ export async function getContacts() {
 
     return contacts.map((contact) => contactSchema.parse(contact))
   } catch (e) {
+    if (e instanceof PrismaClientKnownRequestError) {
+      console.log(`Prisma error: ${e.message}`)
+    }
     throw new Error('Failed to fetch contacts')
   }
 }
@@ -41,6 +45,9 @@ export async function getContact(id: string): Promise<Contact> {
 
     return contactSchema.parse(contact)
   } catch (e) {
+    if (e instanceof PrismaClientKnownRequestError) {
+      console.log(`Prisma error: ${e.message}`)
+    }
     throw new Error('Failed to fetch contact')
   }
 }
@@ -53,7 +60,6 @@ export async function createContact(formData: FormData) {
   try {
     const contact = contactFormSchema.parse({
       ...Object.fromEntries(formData.entries()),
-      userId,
     })
 
     const data = {
@@ -66,14 +72,20 @@ export async function createContact(formData: FormData) {
       data,
     })
   } catch (e) {
-    console.log(e)
+    if (e instanceof PrismaClientKnownRequestError) {
+      console.log(`Prisma error: ${e.message}`)
+
+      if (e.code === 'P2002') {
+        throw new Error('The contact already exists')
+      }
+    }
     throw new Error('Failed to create contact')
   }
 
   revalidatePath('/contacts')
 }
 
-export async function deleteContact(formData: FormData) {
+export async function deleteContact(contactId: number) {
   const { userId } = auth()
 
   if (!userId) throw new Error('Unauthorized')
@@ -81,11 +93,14 @@ export async function deleteContact(formData: FormData) {
   try {
     await prisma.contact.delete({
       where: {
-        id: parseInt(formData.get('id') as string),
+        id: contactId,
         userId,
       },
     })
   } catch (e) {
+    if (e instanceof PrismaClientKnownRequestError) {
+      console.log(`Prisma error: ${e.message}`)
+    }
     throw new Error('Failed to delete contact')
   }
 
@@ -111,6 +126,9 @@ export async function updateContact(formData: FormData) {
       data: contact,
     })
   } catch (e) {
+    if (e instanceof PrismaClientKnownRequestError) {
+      console.log(`Prisma error: ${e.message}`)
+    }
     throw new Error('Failed to update contact')
   }
 
