@@ -18,7 +18,7 @@ export default function ContactsLayout({ children }: { children: React.ReactNode
               <Icon icon="profile" />
             </div>
           </div>
-          <ContactDialog>
+          <ContactDialog type="add">
             <Button intent={'special'} variant={'iconButton'} icon={<Icon icon="add" />}>
               Add new
             </Button>
