@@ -1,9 +1,9 @@
-import type { PropsWithChildren } from 'react'
 import type { Metadata } from 'next'
+import type { PropsWithChildren } from 'react'
 
-import { siteConfig } from '@/lib/site-config'
+import { Providers } from '@/components/providers/providers'
 import { glysa, lexendDeca } from '@/lib/fonts/fonts'
-import { ThemeProvider } from '@/components/theme-provider'
+import { siteConfig } from '@/lib/site-config'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -48,9 +48,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
       <body className={`${lexendDeca.variable} ${glysa.variable} mx-auto font-body text-body`}>
-        <ThemeProvider attribute="class" disableTransitionOnChange>
-          {children}
-        </ThemeProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   )
