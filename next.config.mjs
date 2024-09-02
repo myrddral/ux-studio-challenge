@@ -1,4 +1,16 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'ux-studio-challenge-portraits.s3.eu-central-1.amazonaws.com',
+        port: '',
+        pathname: '',
+      },
+    ],
+    minimumCacheTTL: 1800,
+  },
+}
 
-export default nextConfig;
+export default nextConfig

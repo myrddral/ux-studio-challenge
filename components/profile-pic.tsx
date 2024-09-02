@@ -1,13 +1,19 @@
 import Image from 'next/image'
 
-export function ProfilePic({ width, height }: { width: number; height: number }) {
+interface ProfilePicProps {
+  width: number
+  height: number
+  url: string | null
+}
+export function ProfilePic({ width, height, url }: ProfilePicProps) {
   return (
     <Image
-      src={'/profile_512w_round.png'}
+      src={url ?? '/profile_512w_round.png'}
       alt="profile"
       width={width}
       height={height}
       className="rounded-full"
+      unoptimized
     />
   )
 }

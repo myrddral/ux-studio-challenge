@@ -35,6 +35,7 @@ export function ContactDialog({ children, type }: ContactDialogProps) {
     const actionType = params.get('action')
     if (actionType && ['add', 'edit'].includes(actionType)) {
       setDialogType(actionType as ContactDialogProps['type'])
+      setOpen(true)
     }
   }, [params])
 
@@ -61,7 +62,7 @@ export function ContactDialog({ children, type }: ContactDialogProps) {
         </DialogHeader>
         <div className="flex flex-col gap-6">
           <div className="flex items-center gap-4">
-            <ProfilePic width={88} height={88} />
+            <ProfilePic width={88} height={88} url={''} />
             <AddPictureButton setImageUrl={setImageUrl} />
           </div>
           <form onSubmit={handleSubmit} className="flex flex-col gap-6">
