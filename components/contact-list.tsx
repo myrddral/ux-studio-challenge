@@ -1,19 +1,14 @@
-'use client'
 import type { Contact } from '@/lib/schemas/contact.schema'
 
 import { ContactListItem } from './contact-list-item'
 
 export function ContactList({ contacts }: { contacts: Contact[] }) {
-  const handleContactClick = (contact: Contact) => {
-    console.log(contact)
-  }
-
-  if (!contacts.length) return "No contacts found"
+  if (!contacts.length) return 'No contacts found'
 
   return (
     <ul className="flex flex-col">
       {contacts.map((contact) => (
-        <ContactListItem key={contact.id} contact={contact} onClick={handleContactClick} />
+        <ContactListItem key={contact.id} contact={contact} />
       ))}
     </ul>
   )
