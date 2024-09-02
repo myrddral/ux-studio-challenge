@@ -1,4 +1,3 @@
-'use client'
 import type { Contact } from '@/lib/schemas/contact.schema'
 
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
@@ -7,23 +6,12 @@ import { Highlight, Message } from './texts'
 import { Icon } from './ui/icon'
 import { Button } from './ui/button'
 import { deleteContact } from '@/app/actions'
-import { useEffect, useState } from 'react'
-import { getImageUrl } from '@/app/s3-actions'
 
 type ContactListItemProps = {
   contact: Contact
 }
 
 export function ContactListItem({ contact }: ContactListItemProps) {
-  const { avatar } = contact
-  const [imageUrl, setImageUrl] = useState<string | null>(null)
-
-  useEffect(() => {
-    if (avatar) {
-      getImageUrl(avatar).then((url) => setImageUrl(url))
-    }
-  }, [avatar])
-
   const handleMuteClick = () => {
     console.log('Mute')
   }
@@ -51,7 +39,7 @@ export function ContactListItem({ contact }: ContactListItemProps) {
   return (
     <div className="group flex h-16 w-full items-center justify-between gap-4">
       <div className="flex items-center gap-4">
-        <ProfilePic width={40} height={40} url={imageUrl} />
+        <ProfilePic width={40} height={40} url={contact.avatar} />
         <div className="flex shrink-0 flex-col">
           <Highlight>{contact.name}</Highlight>
           <Message className="text-secondary">{contact.phone}</Message>
