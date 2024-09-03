@@ -1,7 +1,7 @@
 import type { ChangeEvent, Dispatch, SetStateAction } from 'react'
 import { useRef } from 'react'
 import { Button } from './ui/button'
-import { Icon } from './ui/icon'
+import { AddIcon } from './icons/add'
 
 interface AddPictureButtonProps {
   setImageUrl: Dispatch<SetStateAction<string>>
@@ -24,8 +24,8 @@ export function AddPictureButton({ setImageUrl }: AddPictureButtonProps) {
 
   return (
     <>
-      <input type="file" ref={fileInputRef} style={{ display: 'none' }} onChange={handleOnChange} />
-      <Button intent="primary" variant="iconButton" icon={<Icon icon="add" />} onClick={handleAddClick}>
+      <input type='file' ref={fileInputRef} style={{ display: 'none' }} onChange={handleOnChange} />
+      <Button intent='primary' variant='iconButton' icon={<AddIcon />} onClick={handleAddClick}>
         Add picture
       </Button>
     </>

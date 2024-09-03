@@ -8,11 +8,11 @@ interface ProfilePicProps {
 export function ProfilePic({ width, height, url }: ProfilePicProps) {
   return (
     <Image
-      src={url || '/profile_512w_round.png'}
-      alt="profile"
+      src={url || '/profile_176w_round.png'}
+      alt='profile'
       width={width}
       height={height}
-      className="rounded-full"
+      className='rounded-full'
       unoptimized
     />
   )

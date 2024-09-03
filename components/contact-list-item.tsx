@@ -1,11 +1,16 @@
 import type { Contact } from '@/lib/schemas/contact.schema'
 
+import { deleteContact } from '@/app/actions'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { CallIcon } from './icons/call'
+import { DeleteIcon } from './icons/delete'
+import { FavouriteIcon } from './icons/favourite'
+import { MoreIcon } from './icons/more'
+import { MuteIcon } from './icons/mute'
+import { SettingsIcon } from './icons/settings'
 import { ProfilePic } from './profile-pic'
 import { Highlight, Message } from './texts'
-import { Icon } from './ui/icon'
 import { Button } from './ui/button'
-import { deleteContact } from '@/app/actions'
 
 type ContactListItemProps = {
   contact: Contact
@@ -37,49 +42,34 @@ export function ContactListItem({ contact }: ContactListItemProps) {
   }
 
   return (
-    <div className="group flex h-16 w-full items-center justify-between gap-4">
-      <div className="flex items-center gap-4">
+    <div className='group flex h-16 w-full items-center justify-between gap-4'>
+      <div className='flex items-center gap-4'>
         <ProfilePic width={40} height={40} url={contact.avatar} />
-        <div className="flex shrink-0 flex-col">
+        <div className='flex shrink-0 flex-col'>
           <Highlight>{contact.name}</Highlight>
-          <Message className="text-secondary">{contact.phone}</Message>
+          <Message className='text-secondary'>{contact.phone}</Message>
         </div>
       </div>
-      <div className="flex w-fit gap-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-        <Button variant="iconOnly" intent="secondary" icon={<Icon icon="mute" />} onClick={handleMuteClick} />
-        <Button variant="iconOnly" intent="secondary" icon={<Icon icon="call" />} onClick={handleCallClick} />
+      <div className='flex w-fit gap-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100'>
+        <Button variant='iconOnly' intent='secondary' icon={<MuteIcon />} onClick={handleMuteClick} />
+        <Button variant='iconOnly' intent='secondary' icon={<CallIcon />} onClick={handleCallClick} />
         <Popover>
           <PopoverTrigger asChild>
-            <Button
-              variant="iconOnly"
-              intent="secondary"
-              icon={<Icon icon="more" />}
-              onClick={handleMoreClick}
-            />
+            <Button variant='iconOnly' intent='secondary' icon={<MoreIcon />} onClick={handleMoreClick} />
           </PopoverTrigger>
-          <PopoverContent align="start" className="flex flex-col p-0">
-            <Button
-              variant="iconButton"
-              intent="popover"
-              icon={<Icon icon="settings" />}
-              onClick={handleEditClick}
-            >
+          <PopoverContent align='start' className='flex flex-col p-0'>
+            <Button variant='iconButton' intent='popover' icon={<SettingsIcon />} onClick={handleEditClick}>
               Edit
             </Button>
             <Button
-              variant="iconButton"
-              intent="popover"
-              icon={<Icon icon="favourite" />}
+              variant='iconButton'
+              intent='popover'
+              icon={<FavouriteIcon />}
               onClick={handleFavouriteClick}
             >
               Favourite
             </Button>
-            <Button
-              variant="iconButton"
-              intent="popover"
-              icon={<Icon icon="delete" />}
-              onClick={handleDeleteClick}
-            >
+            <Button variant='iconButton' intent='popover' icon={<DeleteIcon />} onClick={handleDeleteClick}>
               Remove
             </Button>
           </PopoverContent>

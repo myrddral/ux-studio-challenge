@@ -10,13 +10,13 @@ const buttonVariants = cva(
     variants: {
       intent: {
         primary:
-          'hover:bg-primary-button-hover active:bg-primary-button-active max-w-fit bg-primary-button text-primary transition',
+          'max-w-fit bg-primary-button text-primary transition hover:bg-primary-button-hover active:bg-primary-button-active',
         secondary:
-          'hover:bg-secondary-button-hover active:bg-secondary-button-active max-w-fit bg-secondary-button text-primary transition',
+          'max-w-fit bg-secondary-button text-primary transition hover:bg-secondary-button-hover active:bg-secondary-button-active',
         special:
-          'btn-grad max-w-fit rounded-full border border-transparent transition hover:brightness-125 active:brightness-150',
+          'btn-grad-light dark:btn-grad max-w-fit rounded-full border border-transparent transition hover:brightness-125 active:brightness-150',
         popover:
-          'hover:bg-popover-button-hover active:bg-popover-button-active bg-popover-button rounded-none justify-start text-primary transition first:rounded-t-md last:rounded-b-md !px-2 !gap-3',
+          'justify-start !gap-3 rounded-none bg-popover-button !px-2 text-primary transition first:rounded-t-md last:rounded-b-md hover:bg-popover-button-hover active:bg-popover-button-active',
       },
       variant: {
         default: 'px-4 py-2',
