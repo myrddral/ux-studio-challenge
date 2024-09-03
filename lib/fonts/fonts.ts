@@ -1,4 +1,5 @@
 import localFont from 'next/font/local'
+import { Lexend_Deca } from 'next/font/google'
 
 export const glysa = localFont({
   src: './Glysa.otf',
@@ -6,8 +7,8 @@ export const glysa = localFont({
   variable: '--font-glysa',
 })
 
-export const lexendDeca = localFont({
-  src: './LexendDeca-VariableFont_wght.ttf',
+export const lexendDeca = Lexend_Deca({
+  subsets: ['latin'],
   display: 'swap',
   variable: '--font-lexend-deca',
 })
