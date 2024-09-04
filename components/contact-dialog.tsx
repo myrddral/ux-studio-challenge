@@ -94,7 +94,7 @@ export function ContactDialog({ children }: PropsWithChildren) {
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className='sm:max-w-[364px]'>
+      <DialogContent className='max-w-[364px] max-sm:rounded-xl'>
         <DialogHeader>
           <Subtitle>
             <span className='capitalize'>{action}</span> contact
@@ -143,7 +143,7 @@ export function ContactDialog({ children }: PropsWithChildren) {
               minLength={7}
               maxLength={255}
             />
-            <DialogFooter className='pt-6'>
+            <DialogFooter className='pt-6 flex-row space-x-6 justify-end'>
               <DialogClose asChild>
                 <Button type='button' intent='secondary'>
                   Cancel
