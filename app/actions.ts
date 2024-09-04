@@ -1,8 +1,8 @@
 'use server'
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
-import { contactFormSchema, contactSchema } from '@/lib/schemas/contact.schema'
-import prisma from '@/lib/prisma-client/prisma-client'
+import { handleActionException } from '@/lib/action-exception-handler'
 import { auth } from '@/lib/auth/auth'
+import prisma from '@/lib/prisma-client/prisma-client'
+import { contactFormSchema, contactSchema } from '@/lib/schemas/contact.schema'
 
 export async function getContacts() {
   const { userId } = auth()
@@ -22,10 +22,7 @@ export async function getContacts() {
 
     return contacts.map((contact) => contactSchema.parse(contact))
   } catch (e) {
-    if (e instanceof PrismaClientKnownRequestError) {
-      console.log(`Prisma error: ${e.message}`)
-    }
-    throw new Error('Failed to fetch contacts')
+    handleActionException(e)
   }
 }
 
@@ -39,23 +36,13 @@ export async function createContact(formData: FormData) {
       ...Object.fromEntries(formData.entries()),
     })
 
-    const data = {
-      ...contact,
-      userId,
-    }
+    const data = { ...contact, userId }
 
     await prisma.contact.create({
       data,
     })
   } catch (e) {
-    if (e instanceof PrismaClientKnownRequestError) {
-      console.log(`Prisma error: ${e.message}`)
-
-      if (e.code === 'P2002') {
-        throw new Error('The contact already exists')
-      }
-    }
-    throw new Error('Failed to create contact')
+    handleActionException(e)
   }
 }
 
@@ -78,11 +65,7 @@ export async function updateContact(formData: FormData) {
       data: contact,
     })
   } catch (e) {
-    if (e instanceof PrismaClientKnownRequestError) {
-      console.log(`Prisma error: ${e.message}`)
-    }
-    console.log(e)
-    throw new Error('Failed to update contact')
+    handleActionException(e)
   }
 }
 
@@ -99,9 +82,6 @@ export async function deleteContact(contactId: number) {
       },
     })
   } catch (e) {
-    if (e instanceof PrismaClientKnownRequestError) {
-      console.log(`Prisma error: ${e.message}`)
-    }
-    throw new Error('Failed to delete contact')
+    handleActionException(e)
   }
 }
