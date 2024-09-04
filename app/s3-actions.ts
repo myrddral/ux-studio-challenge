@@ -25,12 +25,11 @@ export const getImageUrls = async (keys: (string | null)[]) => {
 
   try {
     const urls = await Promise.all(
-      keys
-        .filter((key) => key !== null)
-        .map(async (key) => {
-          const command = new GetObjectCommand({ ...getParams, Key: key as string })
-          return await getSignedUrl(s3, command, { expiresIn: 3600 })
-        })
+      keys.map(async (key) => {
+        if (!key) return null
+        const command = new GetObjectCommand({ ...getParams, Key: key as string })
+        return await getSignedUrl(s3, command, { expiresIn: 3600 })
+      })
     )
     return urls
   } catch (err) {
