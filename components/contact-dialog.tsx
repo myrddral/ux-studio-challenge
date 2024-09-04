@@ -32,7 +32,7 @@ type ActionType = 'add' | 'edit'
 export function ContactDialog({ children }: PropsWithChildren) {
   const [formValues, setFormValues] = useState<Contact>(defaultValues as Contact)
   const { createContactMutation, updateContactMutation } = useMutations()
-  const [imageUrl, setImageUrl] = useState('')
+  const [imageUrl, setImageUrl] = useState<string | null>(null)
   const params = useSearchParams()
   const action = params.get('action') as ActionType
   const contactId = params.get('id') as string
@@ -79,9 +79,10 @@ export function ContactDialog({ children }: PropsWithChildren) {
     e.preventDefault()
     if (action === 'add') {
       const formData = new FormData(e.currentTarget)
-      formData.append('avatar', imageUrl)
+      // formData.append('avatar', imageUrl)
       createContactMutation.mutate(formData)
-    } else {
+    }
+    if (action === 'edit') {
       const formData = new FormData(e.currentTarget)
       formData.append('id', contactId)
       // formData.append('avatar', imageUrl)
@@ -105,7 +106,7 @@ export function ContactDialog({ children }: PropsWithChildren) {
         </DialogHeader>
         <div className='flex flex-col gap-6'>
           <div className='flex items-center gap-4'>
-            <ProfilePic width={88} height={88} url={''} />
+            <ProfilePic width={88} height={88} url={imageUrl} />
             <AddPictureButton setImageUrl={setImageUrl} />
           </div>
           <form onSubmit={handleSubmit} className='flex flex-col gap-6'>
