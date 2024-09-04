@@ -1,7 +1,8 @@
+'use client'
 import type { Contact } from '@/lib/schemas/contact.schema'
 
-import { deleteContact } from '@/app/actions'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { useRouter } from 'next/navigation'
 import { CallIcon } from './icons/call'
 import { DeleteIcon } from './icons/delete'
 import { FavouriteIcon } from './icons/favourite'
@@ -11,34 +12,37 @@ import { SettingsIcon } from './icons/settings'
 import { ProfilePic } from './profile-pic'
 import { Highlight, Message } from './texts'
 import { Button } from './ui/button'
+import { useMutations } from '@/hooks/mutations'
+import { useState } from 'react'
+import { cn } from '@/lib/utils'
 
 type ContactListItemProps = {
   contact: Contact
 }
 
 export function ContactListItem({ contact }: ContactListItemProps) {
+  const { deleteContactMutation } = useMutations()
+  const router = useRouter()
+  const [open, setOpen] = useState(false)
+
   const handleMuteClick = () => {
-    console.log('Mute')
+    alert('Mute')
   }
 
   const handleCallClick = () => {
-    console.log('Call')
-  }
-
-  const handleMoreClick = () => {
-    console.log('More')
-  }
-
-  const handleEditClick = () => {
-    console.log('Edit')
+    alert('Call')
   }
 
   const handleFavouriteClick = () => {
-    console.log('Favourite')
+    alert('Favourite')
+  }
+
+  const handleEditClick = () => {
+    router.push(`?action=edit&id=${contact.id}`)
   }
 
   const handleDeleteClick = () => {
-    deleteContact(contact.id)
+    deleteContactMutation.mutate(contact.id)
   }
 
   return (
@@ -50,12 +54,22 @@ export function ContactListItem({ contact }: ContactListItemProps) {
           <Message className='text-secondary'>{contact.phone}</Message>
         </div>
       </div>
-      <div className='flex w-fit gap-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100'>
+      <div
+        className={cn(
+          'flex w-fit gap-2 transition-opacity duration-300 group-hover:opacity-100',
+          open ? 'opacity-100' : 'opacity-0'
+        )}
+      >
         <Button variant='iconOnly' intent='secondary' icon={<MuteIcon />} onClick={handleMuteClick} />
         <Button variant='iconOnly' intent='secondary' icon={<CallIcon />} onClick={handleCallClick} />
-        <Popover>
+        <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
-            <Button variant='iconOnly' intent='secondary' icon={<MoreIcon />} onClick={handleMoreClick} />
+            <Button
+              variant='iconOnly'
+              intent='secondary'
+              icon={<MoreIcon />}
+              className={open ? 'bg-secondary-button-active' : ''}
+            />
           </PopoverTrigger>
           <PopoverContent align='start' className='flex flex-col p-0'>
             <Button variant='iconButton' intent='popover' icon={<SettingsIcon />} onClick={handleEditClick}>
