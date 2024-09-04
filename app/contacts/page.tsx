@@ -1,22 +1,14 @@
 'use client'
 import { ContactList } from '@/components/contact-list'
-import { getContacts } from '../actions'
-import { useQuery } from '@tanstack/react-query'
 import { Loading } from '@/components/ui/loading'
-
-const fetchContacts = async () => {
-  return await getContacts()
-}
+import { useQueries } from '@/hooks/queries'
 
 export default function ContactsPage() {
-  const { data, isLoading } = useQuery({
-    queryKey: ['get-contacts-server-action'],
-    queryFn: fetchContacts,
-  })
+  const { contacts, isContactsLoading } = useQueries()
 
   return (
-    <main className="flex w-full flex-col">
-      {isLoading ? <Loading /> : <ContactList contacts={data ?? []} />}
+    <main className='flex w-full flex-col'>
+      {isContactsLoading ? <Loading /> : <ContactList contacts={contacts} />}
     </main>
   )
 }
