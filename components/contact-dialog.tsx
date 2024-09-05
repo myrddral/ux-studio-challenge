@@ -1,5 +1,5 @@
 'use client'
-import type { Contact } from '@/lib/schemas/contact.schema'
+import type { Contact, FormContact } from '@/lib/schemas/contact.schema'
 import type { ChangeEvent, FormEvent, PropsWithChildren } from 'react'
 
 //prettier-ignore
@@ -15,7 +15,7 @@ import { removeQueryParams } from '@/lib/utils'
 import { useQuery } from '@tanstack/react-query'
 import { useMutations } from '@/hooks/mutations'
 
-const defaultValues = {
+const defaultValues: FormContact = {
   email: '',
   name: '',
   phone: '',
@@ -32,7 +32,8 @@ type ActionType = 'add' | 'edit'
 export function ContactDialog({ children }: PropsWithChildren) {
   const [formValues, setFormValues] = useState<Contact>(defaultValues as Contact)
   const { createContactMutation, updateContactMutation } = useMutations()
-  const [imageUrl, setImageUrl] = useState<string | null>(null)
+  const [newKey, setNewKey] = useState<string | null>(null)
+  const [newImageUrl, setNewImageUrl] = useState<string | null>(null)
   const params = useSearchParams()
   const action = params.get('action') as ActionType
   const contactId = params.get('id') as string
@@ -79,13 +80,17 @@ export function ContactDialog({ children }: PropsWithChildren) {
     e.preventDefault()
     if (action === 'add') {
       const formData = new FormData(e.currentTarget)
-      // formData.append('avatar', imageUrl)
+      if (newKey) {
+        formData.append('avatar', newKey)
+      }
       createContactMutation.mutate(formData)
     }
     if (action === 'edit') {
       const formData = new FormData(e.currentTarget)
       formData.append('id', contactId)
-      // formData.append('avatar', imageUrl)
+      if (newKey) {
+        formData.append('avatar', newKey)
+      }
       updateContactMutation.mutate(formData)
     }
     handleOpenChange(false)
@@ -106,8 +111,8 @@ export function ContactDialog({ children }: PropsWithChildren) {
         </DialogHeader>
         <div className='flex flex-col gap-6'>
           <div className='flex items-center gap-4'>
-            <ProfilePic width={88} height={88} url={imageUrl} />
-            <AddPictureButton setImageUrl={setImageUrl} />
+            <ProfilePic width={88} height={88} url={newImageUrl || formValues.avatar} />
+            <AddPictureButton setNewKey={setNewKey} setNewImageUrl={setNewImageUrl} />
           </div>
           <form onSubmit={handleSubmit} className='flex flex-col gap-6'>
             <InputWithLabel
@@ -143,7 +148,7 @@ export function ContactDialog({ children }: PropsWithChildren) {
               minLength={7}
               maxLength={255}
             />
-            <DialogFooter className='pt-6 flex-row space-x-6 justify-end'>
+            <DialogFooter className='flex-row justify-end space-x-6 pt-6'>
               <DialogClose asChild>
                 <Button type='button' intent='secondary'>
                   Cancel

@@ -1,57 +1,68 @@
 'use client'
+import type { AllowedImageExtensions } from '@/lib/site-config'
 import type { ChangeEvent, Dispatch, SetStateAction } from 'react'
 
-import { useRef } from 'react'
-import { Button } from './ui/button'
-import { AddIcon } from './icons/add'
-import { getImageUrls, getUploadUrl } from '@/app/s3-actions'
+import { getImageUploadUrl, getImageUrl } from '@/app/s3-actions'
+import { resizeImage } from '@/lib/client-utils'
+import { allowedImageExtensions } from '@/lib/site-config'
 import { nanoid } from 'nanoid'
+import { useRef } from 'react'
+import { AddIcon } from './icons/add'
+import { Button } from './ui/button'
 
 interface AddPictureButtonProps {
-  setImageUrl: Dispatch<SetStateAction<string | null>>
+  setNewKey: Dispatch<SetStateAction<string | null>>
+  setNewImageUrl: Dispatch<SetStateAction<string | null>>
 }
 
-export function AddPictureButton({ setImageUrl }: AddPictureButtonProps) {
+export function AddPictureButton({ setNewKey, setNewImageUrl }: AddPictureButtonProps) {
   const fileInputRef = useRef<HTMLInputElement | null>(null)
+
+  const isAllowedImage = (ext: AllowedImageExtensions[number]) => {
+    return allowedImageExtensions.includes(ext)
+  }
 
   const handleOnChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
-      const extension = file.name.split('.').pop() as string
-      if (['jpeg', 'jpg', 'png', 'webp'].indexOf(extension) === -1) {
+      const ext = file.name.split('.').pop() as AllowedImageExtensions[number]
+
+      if (!isAllowedImage(ext)) {
         alert('Only JPEG, JPG, PNG and WEBP files are supported')
         return
       }
-      const key = nanoid() + `.${extension}`
-      const url = await getUploadUrl(key)
-      const res = await uploadFile(url, file)
 
-      if (res) {
-        getImageUrls([key]).then((urls) => {
-          if (!urls.length) return
-          setImageUrl(urls[0])
+      const blob = await resizeImage(file, 176, 176)
+      const resizedFile = new File([blob], file.name, { type: file.type })
+
+      const key = nanoid() + `.${ext}`
+      const url = await getImageUploadUrl(key)
+      const status = await uploadFile(url, resizedFile)
+
+      if (status === 'success') {
+        getImageUrl(key).then((url) => {
+          if (!url) return
+          setNewKey(key)
+          setNewImageUrl(url)
         })
       }
-      console.log(key)
-      console.log(file)
-      console.log(res)
+
+      if (status === 'failed') {
+        alert('Failed to upload image')
+        return
+      }
     }
   }
 
   async function uploadFile(url: string, file: File) {
-    const formData = new FormData()
-    formData.append('file', file)
-
     const response = await fetch(url, {
       method: 'PUT',
-      body: formData,
+      body: file,
+      headers: { 'Content-Length': new Blob([file]).size.toString() },
     })
 
-    if (!response.ok) {
-      throw new Error('Failed to upload file')
-    }
-
-    return true
+    if (!response.ok) return 'failed'
+    else return 'success'
   }
 
   const handleAddClick = () => {
