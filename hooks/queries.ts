@@ -9,10 +9,10 @@ export function useQueries() {
     queryFn: async () => await getContacts(),
   })
 
-  const keys = contacts.map((c) => (!c.avatar ? null : `${c.avatar}_thumbnail.webp`))
+  const keys = contacts.map((c) => (!c.avatar ? null : `${c.avatar}`))
 
   // TODO: optimize - cache the thumbnails
-  const { data: thumbnails = [] } = useQuery({
+  const { data: avatarsSrcs = [] } = useQuery({
     queryKey: ['get-image-urls-s3-action', keys],
     queryFn: async () => await getImageUrls(keys),
     enabled: contacts.length > 0,
@@ -21,6 +21,6 @@ export function useQueries() {
   return {
     contacts,
     isContactsLoading,
-    thumbnails,
+    avatarsSrcs,
   }
 }

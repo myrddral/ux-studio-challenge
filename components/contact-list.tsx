@@ -4,11 +4,11 @@ import { ContactListItem } from './contact-list-item'
 import { useQueries } from '@/hooks/queries'
 
 export function ContactList({ contacts }: { contacts: Contact[] }) {
-  const { thumbnails } = useQueries()
+  const { avatarsSrcs } = useQueries()
 
   const contactsWithThumbnails = contacts.map((contact, index) => ({
     ...contact,
-    avatar: thumbnails[index] || null,
+    avatar: avatarsSrcs[index] || null,
   }))
 
   if (!contacts.length) return 'No contacts found'
