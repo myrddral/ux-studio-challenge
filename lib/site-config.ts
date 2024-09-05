@@ -9,4 +9,7 @@ export const siteConfig = {
   htmlLang: 'en',
 }
 
+export const allowedImageExtensions = ['jpeg', 'jpg', 'png', 'webp'] as const
+
 export type SiteConfig = typeof siteConfig
+export type AllowedImageExtensions = typeof allowedImageExtensions
