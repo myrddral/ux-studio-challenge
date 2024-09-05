@@ -15,6 +15,8 @@ export const contactFormSchema = contactSchema.pick({
   email: true,
   name: true,
   phone: true,
+  avatar: true,
 })
 
 export type Contact = z.infer<typeof contactSchema>
+export type FormContact = z.infer<typeof contactFormSchema>
