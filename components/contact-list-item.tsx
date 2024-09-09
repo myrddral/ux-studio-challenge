@@ -12,7 +12,7 @@ import { SettingsIcon } from './icons/settings'
 import { ProfilePic } from './profile-pic'
 import { Highlight, Message } from './texts'
 import { Button } from './ui/button'
-import { useMutations } from '@/hooks/mutations'
+import { useMutations } from '@/hooks/useMutations'
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
 

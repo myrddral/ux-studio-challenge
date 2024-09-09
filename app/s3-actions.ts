@@ -34,10 +34,12 @@ export const getImageUrl = async (key: string) => {
  * @param keys An array of keys of the images to retrieve
  * @returns An array of signed URLs to retrieve the images from S3
  */
-export const getImageUrls = async (keys: (string | null)[]) => {
+export const getImageUrls = async (keys: (string | null)[] | undefined) => {
   const { userId } = auth()
 
   if (!userId) throw new Error('Unauthorized')
+
+  if (!keys) return []
 
   try {
     const urls = await Promise.all(

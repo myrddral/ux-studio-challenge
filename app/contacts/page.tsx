@@ -1,14 +1,15 @@
 'use client'
 import { ContactList } from '@/components/contact-list'
 import { Loading } from '@/components/ui/loading'
-import { useQueries } from '@/hooks/queries'
+import { useContacts } from '@/hooks/useContacts'
 
 export default function ContactsPage() {
-  const { contacts, isContactsLoading } = useQueries()
+  const { contactsWithAvatars, isLoading, error } = useContacts()
 
   return (
     <main className='flex w-full flex-col'>
-      {isContactsLoading ? <Loading /> : <ContactList contacts={contacts} />}
+      {error && <p>Error: {error.message}</p>}
+      {isLoading ? <Loading /> : <ContactList contacts={contactsWithAvatars} />}
     </main>
   )
 }

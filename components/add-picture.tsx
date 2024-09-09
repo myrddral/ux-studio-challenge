@@ -8,14 +8,17 @@ import { allowedImageExtensions } from '@/lib/site-config'
 import { nanoid } from 'nanoid'
 import { useRef } from 'react'
 import { AddIcon } from './icons/add'
+import { ChangeIcon } from './icons/change'
+import { DeleteIcon } from './icons/delete'
 import { Button } from './ui/button'
 
 interface AddPictureButtonProps {
+  hasAvatar: boolean
   setNewKey: Dispatch<SetStateAction<string | null>>
   setNewImageUrl: Dispatch<SetStateAction<string | null>>
 }
 
-export function AddPictureButton({ setNewKey, setNewImageUrl }: AddPictureButtonProps) {
+export function AddPictureButton({ hasAvatar, setNewKey, setNewImageUrl }: AddPictureButtonProps) {
   const fileInputRef = useRef<HTMLInputElement | null>(null)
 
   const isAllowedImage = (ext: AllowedImageExtensions[number]) => {
@@ -69,12 +72,25 @@ export function AddPictureButton({ setNewKey, setNewImageUrl }: AddPictureButton
     fileInputRef.current?.click()
   }
 
+  const handleDeleteClick = () => {
+    setNewKey('')
+    setNewImageUrl('')
+  }
+
   return (
-    <>
+    <div className='flex gap-2'>
       <input type='file' ref={fileInputRef} className='sr-only' onChange={handleOnChange} />
-      <Button intent='primary' variant='iconButton' icon={<AddIcon />} onClick={handleAddClick}>
-        Add picture
+      <Button
+        intent='primary'
+        variant='iconButton'
+        icon={hasAvatar ? <ChangeIcon /> : <AddIcon />}
+        onClick={handleAddClick}
+      >
+        {hasAvatar ? 'Change picture' : 'Add picture'}
       </Button>
-    </>
+      {hasAvatar ? (
+        <Button intent='primary' variant='iconOnly' icon={<DeleteIcon />} onClick={handleDeleteClick} />
+      ) : null}
+    </div>
   )
 }

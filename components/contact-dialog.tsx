@@ -1,26 +1,21 @@
 'use client'
-import type { Contact, FormContact } from '@/lib/schemas/contact.schema'
+import type { FormContact } from '@/lib/schemas/contact.schema'
 import type { ChangeEvent, FormEvent, PropsWithChildren } from 'react'
 
 //prettier-ignore
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
+import { useMutations } from '@/hooks/useMutations'
+import { removeQueryParams } from '@/lib/utils'
 import { useSearchParams } from 'next/navigation'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { AddPictureButton } from './add-picture'
 import { ProfilePic } from './profile-pic'
 import { Subtitle } from './texts'
 import { InputWithLabel } from './ui/input-with-label'
-import { removeQueryParams } from '@/lib/utils'
-import { useQuery } from '@tanstack/react-query'
-import { useMutations } from '@/hooks/mutations'
+import { useSingleContact } from '@/hooks/useSingleContact'
 
-const defaultValues: FormContact = {
-  email: '',
-  name: '',
-  phone: '',
-  avatar: '',
-}
+const defaultValues: FormContact = { email: '', name: '', phone: '', avatar: '' }
 
 type ActionType = 'add' | 'edit'
 
@@ -30,7 +25,7 @@ type ActionType = 'add' | 'edit'
  * @returns The trigger element visibly rendered in the DOM and the dialog itself
  */
 export function ContactDialog({ children }: PropsWithChildren) {
-  const [formValues, setFormValues] = useState<Contact>(defaultValues as Contact)
+  const [formValues, setFormValues] = useState<FormContact>(defaultValues)
   const { createContactMutation, updateContactMutation } = useMutations()
   const [newKey, setNewKey] = useState<string | null>(null)
   const [newImageUrl, setNewImageUrl] = useState<string | null>(null)
@@ -38,38 +33,32 @@ export function ContactDialog({ children }: PropsWithChildren) {
   const action = params.get('action') as ActionType
   const contactId = params.get('id') as string
   const [open, setOpen] = useState(false)
+  const contact = useSingleContact(Number(contactId))
 
-  const { data: contacts = [] } = useQuery({
-    queryKey: ['get-contacts-server-action'],
-    enabled: action === 'edit' && contactId?.length > 0,
-  }) as { data: Contact[] }
+  const isFormInitialized = useRef(false)
 
-  const handleOpenChange = useCallback(
-    (open: boolean) => {
-      if (open) {
-        if (action === 'edit') {
-          if (contactId && contacts.length > 0) {
-            const contact = contacts.find((contact) => contact.id === parseInt(contactId))
-            if (contact) setFormValues(contact)
-          }
-        }
-      }
+  const handleOpenChange = useCallback((open: boolean) => {
+    if (!open) {
+      removeQueryParams(['action', 'id'])
+      setFormValues(defaultValues)
+      isFormInitialized.current = false
+    }
 
-      if (!open) {
-        removeQueryParams(['action', 'id'])
-        setFormValues(defaultValues as Contact)
-      }
-
-      setOpen(open)
-    },
-    [action, contactId, contacts]
-  )
+    setOpen(open)
+  }, [])
 
   // open dialog if action is set in the URL
   // use handleOpenChange, otherwise the contact won't be set in edit mode
   useEffect(() => {
     if (action && ['add', 'edit'].includes(action)) handleOpenChange(true)
   }, [action, handleOpenChange])
+
+  useEffect(() => {
+    if (open && action === 'edit' && contact && !isFormInitialized.current) {
+      setFormValues(contact)
+      isFormInitialized.current = true
+    }
+  }, [open, action, contact])
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -78,19 +67,15 @@ export function ContactDialog({ children }: PropsWithChildren) {
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
+    const formData = new FormData(e.currentTarget)
+
     if (action === 'add') {
-      const formData = new FormData(e.currentTarget)
-      if (newKey) {
-        formData.append('avatar', newKey)
-      }
+      if (newKey) formData.append('avatar', newKey)
       createContactMutation.mutate(formData)
     }
     if (action === 'edit') {
-      const formData = new FormData(e.currentTarget)
+      if (newKey !== null && contact?.avatar !== newKey) formData.append('avatar', newKey)
       formData.append('id', contactId)
-      if (newKey) {
-        formData.append('avatar', newKey)
-      }
       updateContactMutation.mutate(formData)
     }
     handleOpenChange(false)
@@ -111,8 +96,12 @@ export function ContactDialog({ children }: PropsWithChildren) {
         </DialogHeader>
         <div className='flex flex-col gap-6'>
           <div className='flex items-center gap-4'>
-            <ProfilePic width={88} height={88} url={newImageUrl || formValues.avatar} />
-            <AddPictureButton setNewKey={setNewKey} setNewImageUrl={setNewImageUrl} />
+            <ProfilePic width={88} height={88} url={newImageUrl ?? formValues.avatar} />
+            <AddPictureButton
+              hasAvatar={!!contact?.avatar || !!newKey}
+              setNewKey={setNewKey}
+              setNewImageUrl={setNewImageUrl}
+            />
           </div>
           <form onSubmit={handleSubmit} className='flex flex-col gap-6'>
             <InputWithLabel
